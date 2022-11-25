@@ -8,7 +8,7 @@ import { StagiaireService } from './core/services/stagiaire.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public title = 'Suivi des stagaires';
+  public title = 'Suivi des stagiaires';
 
   public stagiaires: Array<Stagiaire> = this.stagiaireService.getStagiaires();
 
@@ -22,7 +22,7 @@ export class AppComponent {
 
   public toggleTitle(): void {
     if (this.title === 'Suivi des stagiaires') {
-      this.title = 'Hello Angular';
+      this.title = 'Trainees survey';
     } else {
       this.title = 'Suivi des stagiaires';
     }
