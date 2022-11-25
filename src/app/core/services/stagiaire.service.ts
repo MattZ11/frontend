@@ -48,6 +48,11 @@ export class StagiaireService {
     return this.stagiaires;
   }
 
+  public addStagiaire(stagiaire: Stagiaire){
+console.log("Add Stagiaire", stagiaire)
+  };
+
+
   public delete(stagiaire: Stagiaire): void {
     console.log(`Le composant me demande de supprimer ${stagiaire.getLastName()}`);
     //  1. call backend
@@ -110,4 +115,6 @@ export class StagiaireService {
     this.stagiaires.push(stagiaire);
 
   }
+
+
 }
