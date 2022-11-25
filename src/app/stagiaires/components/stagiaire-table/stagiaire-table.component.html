@@ -1,0 +1,61 @@
+<app-stagiaire-filter [filterDate]="stopDate" (onChangeFilter)="filterChanged($event)"></app-stagiaire-filter>
+
+<table>
+    <thead>
+        <tr><!-- tr : table row-->
+            <th>&nbsp;</th>
+            <th>#</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Birthdate</th>
+            <th>&nbsp;</th> <!-- espace insécable unbrakable space -->
+        </tr>
+    </thead>
+
+    <tbody>
+        <ng-container *ngFor="let stagiaire of stagiaires">
+            <tr *ngIf="changeView(stagiaire)">
+                <!--le méthode onCLick, appliquée à une ligne du tableau, est définie dans le .ts"-->
+                <!--<tr *ngIf="(stopDate !== null) ? stagiaire.getBirthDate() > stopDate : stagiaire.getBirthDate()"> <!--: true">-->
+                <!--amélioration de "stagiaire.getBirthDate() > stopDate"-->
+            <!--on ne peut pas avoir for et if dans
+        la même ligne, d'où la création du ng-container-->
+                <td>
+                    <span appBubble [config] = "bubbleConfig" (click)="onClick(stagiaire)"> <!--pas compris-->
+                    {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
+                </span>
+                </td>
+                <td>
+                    {{ stagiaire.getId() }}
+                </td>
+                <td>
+                    {{ stagiaire.getLastName() | uppercase }}
+                    <!-- "|" symbolise le "pipe"  -->
+                </td>
+                <td>
+                    {{ stagiaire.getFirstName() }}
+                </td>
+                <td>
+                    {{ stagiaire.getBirthDate() | date: 'dd-MM-YYYY' }}
+                </td>
+                <td>
+                    <button type="button" (click)="onRemove(stagiaire)">x</button>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">Nb. items</td>
+            <td>{{ getVisibleStagiaireNumber()}}</td>
+        </tr>
+    </tfoot>
+</table>
+
+<app-stagiaire-detail
+[hidden]="isDetailHidden$ |async"
+[stagiaire]="selectedStagiaire!"        
+></app-stagiaire-detail>
+<!-- onCloseEvent est ici le récepteur de l'Output du fichier ts correspondant -->
+<!-- je n'avais pas écrit   [stagiaire]="selectedStagiaire!"   et le bloc d'infos n'apparaîssait pas -->
+<!-- | async fait le travail du subscribe -->

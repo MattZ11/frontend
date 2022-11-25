@@ -1,0 +1,35 @@
+$font-color: rgb(126, 126, 199);
+$inversed-font-color: rgb(255, 255, 255);
+
+button {
+    border-radius: .25em;
+    background-color: transparent;
+    border: none;
+    color: $font-color;
+    width: 8em;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+    text-align: center;
+    &.active {
+        font-weight: bold;
+        background-color: $font-color;
+        color: $inversed-font-color;
+        animation: coolEffect .8s ease-out 0s 1 backwards;
+    }
+}
+
+@keyframes coolEffect {
+    0% {
+        background-color: rgba(70, 0, 113, 0.5);
+        color: rgba(248, 243, 243, 0.596);
+    }
+    50% {
+        background-color: rgba(70, 0, 113, 0.5);
+        color: rgba(248, 243, 243, 0.596);
+    }
+    100% {
+        background-color: rgba(70, 0, 113, 0.5);
+        color: $inversed-font-color;
+    }
+}

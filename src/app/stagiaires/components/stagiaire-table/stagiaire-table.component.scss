@@ -1,0 +1,14 @@
+$head-foot-background-color:rgb(126, 126, 199);
+$head-foot-text-color:rgb(255, 255, 255);
+$std-color: rgb(232, 221, 236);
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    
+
+thead, tfoot{
+    background-color: $head-foot-background-color;
+    color: $head-foot-text-color;
+}
+}
