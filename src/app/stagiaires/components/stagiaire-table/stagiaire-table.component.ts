@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
@@ -39,7 +40,8 @@ export class StagiaireTableComponent implements OnInit {
     
   constructor(
     private stagiaireService: StagiaireService,
-    private handleDetailService: HandleDetailService
+    private handleDetailService: HandleDetailService,
+    private router: Router
     ) { }
 
 
@@ -71,12 +73,12 @@ export class StagiaireTableComponent implements OnInit {
   }
 
 
-  public onClick(stagiaire: Stagiaire): void {
-    
-      // Il faut que j'arrive à afficher un composant
-    
-      this.selectedStagiaire = stagiaire;
-      this.handleDetailService.setIsDetailHidden(false);  //  change la valeur de l'observable
+  public onClick(stagiaire: Stagiaire): void {    // Il faut que j'arrive à afficher un composant
+    this.router.navigate(['/', 'stagiaire', stagiaire.getId()]);
+      
+      //conduisait directement au tableau sans passer par bdd
+     // this.selectedStagiaire = stagiaire;
+     // this.handleDetailService.setIsDetailHidden(false);  //  change la valeur de l'observable
 
   }
 

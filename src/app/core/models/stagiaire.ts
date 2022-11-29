@@ -3,8 +3,8 @@ export class Stagiaire {
     private lastName: string = '';
     private firstName: string = '';
     private email: string = '';
-    private phoneNumber: string = '';
-    private birthDate!: Date; //?
+    private phoneNumber!: string; // "!" rend le phoneNumber nullable -null par défaut-
+    private birthDate!: Date; //    idem
 
     public getId(): number {
         return this.id;

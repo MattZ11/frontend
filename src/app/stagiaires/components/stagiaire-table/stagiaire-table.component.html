@@ -22,7 +22,7 @@
         la même ligne, d'où la création du ng-container-->
                 <td>
                     <span appBubble [config] = "bubbleConfig" (click)="onClick(stagiaire)"> <!--pas compris-->
-                    {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
+                    {{ stagiaire | initials }}
                 </span>
                 </td>
                 <td>
@@ -52,10 +52,12 @@
     </tfoot>
 </table>
 
-<app-stagiaire-detail
+<a [routerLink]="['/', 'stagiaire', 'add']">Ajouter</a>
+
+<!-- <app-stagiaire-detail
 [hidden]="isDetailHidden$ |async"
 [stagiaire]="selectedStagiaire!"        
-></app-stagiaire-detail>
+></app-stagiaire-detail> -->
 <!-- onCloseEvent est ici le récepteur de l'Output du fichier ts correspondant -->
 <!-- je n'avais pas écrit   [stagiaire]="selectedStagiaire!"   et le bloc d'infos n'apparaîssait pas -->
 <!-- | async fait le travail du subscribe -->

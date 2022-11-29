@@ -1,36 +1,78 @@
 <form [formGroup]="stagiaireForm" (ngSubmit)="onSubmit()">
 
     <div>
-        <label for="lastName">Nom: </label>
-        <input id="lastName" type="text" formControlName="lastName">
+        <mat-form-field>
+            <!-- <label for="lastName">Nom: </label> -->
+            <input matInput placeholder="Nom du stagiaire..."
+            id="lastName"
+            type="text"
+            formControlName="lastName">
+            <mat-error *ngIf="c['lastName'].errors && c['lastName'].touched">
+                !! Nom du stagiaire obligatoire !!
+            </mat-error>
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="firstName">Prénom: </label>
-        <input id="firstName" type="text" formControlName="firstName">
+        <mat-form-field>
+            <!-- <label for="firstName">Prénom: </label> -->
+            <input matInput placeholder="Prénom du stagiaire..."
+            id="firstName"
+            type="text"
+            formControlName="firstName">
+            <mat-error *ngIf="c['firstName'].errors && c['firstName'].touched">
+                !! Prénom du stagiaire obligatoire !!
+            </mat-error>
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="email">e-mail: </label>
-        <input id="email" type="email" formControlName="email">
+        <mat-form-field>
+            <!-- <label for="email">e-mail: </label> -->
+            <input matInput placeholder="Adresse e-mail..."
+            id="email"
+            type="email"
+            formControlName="email">
+            <mat-error *ngIf="c['email'].errors && c['email'].touched">
+                <span *ngIf="c['email'].hasError('required')">
+                !! e-mail obligatoire !!
+            </span>
+            <span *ngIf="c['email'].hasError('email')">
+                !! l'e-mail saisi n'est pas une adresse valide !!
+            </span>
+            </mat-error>
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="phoneNumber">Numéro de téléphone: </label>
-        <input id="phoneNumber" type="tel" formControlName="phoneNumber">
+        <mat-form-field>
+            <input matInput placeholder="Numéro de téléphone..."
+            id="phoneNumber"
+            type="phoneNumber"
+            formControlName="phoneNumber">
+            <mat-error *ngIf="c['phoneNumber'].errors && c['phoneNumber'].touched">
+                <span *ngIf="c['phoneNumber'].hasError('required')">
+                !! numéro de téléphone obligatoire !!
+            </span>
+            <span *ngIf="c['phoneNumber'].hasError('pattern')">
+                !! le numéro sasi n'est pas conforme !!
+            </span>
+            </mat-error>
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="birthDate">Date de naissance: </label>
-        <input id="birthDate" type="date" formControlName="birthDate">
+        <mat-form-field appearance="fill">
+            <mat-label>Birthdate</mat-label>
+            <input matInput [matDatepicker]="dp" formControlName="birthDate">
+            <mat-hint>JJ-MM-YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+          </mat-form-field>
     </div>
-
 
     <div>
-        <button type="submit"[disabled]="!stagiaireForm.valid">
-            <!-- type="button" (click)="addStagiaire()" -->
-            Ajouter un stagiaire
-        </button>
+        <button mat-raised-button color="primary" [disabled]="!stagiaireForm.valid">Ajouter stagiaire</button>
+        <button mat-raised-button color="danger" type="button" (click)="goHome()">Liste</button>
     </div>
-
 </form>
