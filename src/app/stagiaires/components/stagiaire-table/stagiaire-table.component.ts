@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
@@ -100,7 +100,7 @@ export class StagiaireTableComponent implements OnInit {
 
   }
   public onUpdate(stagiaire: Stagiaire): void {    // Il faut que j'arrive à afficher un composant
-    console.log('Navigate to Update form');
+    this.router.navigate(['/', 'stagiaire', 'update', stagiaire.getId()]);
   }
 
 

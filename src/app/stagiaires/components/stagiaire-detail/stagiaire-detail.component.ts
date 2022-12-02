@@ -31,7 +31,8 @@ export class StagiaireDetailComponent implements OnInit {
   private handleDetailService: HandleDetailService,  //injection de services dans le constructor
   private route: ActivatedRoute,
   private stagiaireService: StagiaireService,
-  private router: Router
+  private router: Router,
+ 
   ) { }
 
   ngOnInit(): void {

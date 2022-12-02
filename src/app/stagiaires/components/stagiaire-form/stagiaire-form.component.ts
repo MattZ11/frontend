@@ -1,7 +1,7 @@
 import { ReturnStatement } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 import { StagiaireDto } from '../../dto/stagiaire-dto';
@@ -24,13 +24,21 @@ export class StagiaireFormComponent implements OnInit {
   //   birthDate: new FormControl(null),
   // })
 
+public addMode: boolean = true;
+
   constructor(
     private stagiaireService: StagiaireService,
     private formBuilderService: FormBuilderService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.route.url.subscribe((url: UrlSegment[]) => {
+      if(url.filter((urlSegment: UrlSegment) => urlSegment.path === 'update').length){
+        this.addMode = false
+      }
+    });
     this.stagiaireForm = this.formBuilderService.build().getForm();
   }
 

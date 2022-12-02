@@ -30,6 +30,11 @@ export class AppRoutingModule {
   pathMatch: 'full'
 },
 {
+  path: 'stagiaire/update/:id',    // /:
+  component:StagiaireFormComponent,
+ 
+},
+{
   path: '**',   //  wild card
   redirectTo:'home',  //  par exemple, ou page d'erreur...
   pathMatch: 'full'
