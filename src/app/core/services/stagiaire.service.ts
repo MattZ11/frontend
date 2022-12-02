@@ -1,5 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { timingSafeEqual } from 'crypto';
 import { Observable, take, map, catchError, throwError } from 'rxjs';
 import { StagiaireDto } from 'src/app/stagiaires/dto/stagiaire-dto';
 import { environment } from 'src/environments/environment';
@@ -11,7 +12,7 @@ import { Stagiaire } from '../models/stagiaire';
 })
 export class StagiaireService {
   private stagiaires: Array<Stagiaire> = [];  //mémoire locale
-  private controllerBaseUrl!: string ;
+  private controllerBaseUrl!: string;
 
   constructor(
     private httpClient: HttpClient    //  injection de dépendance vers le service HttpClient
@@ -44,74 +45,86 @@ export class StagiaireService {
 
   }
 
-public findOne(id: number): Observable<Stagiaire> {
-  return this.httpClient.get<any>(
-    `${environment.apiBaseUrl}/trainee/${id}`
-  )
-  .pipe(
-    take(1),
-    map((inputStagiaire: any) =>{const stagiaire: Stagiaire = new Stagiaire();
-      stagiaire.setId(inputStagiaire.id);
-      stagiaire.setLastName(inputStagiaire.lastName);     // en vert noms TS (front), en blanc noms json venant de JAVA (back)
-      stagiaire.setFirstName(inputStagiaire.firstName);
-      stagiaire.setEmail(inputStagiaire.email);
-      stagiaire.setPhoneNumber(inputStagiaire.phoneNumber);
-      stagiaire.setBirthDate(new Date(inputStagiaire.birthDate));
-      return stagiaire;
-    })
-  )
-}
+  public findOne(id: number): Observable<Stagiaire> {
+    return this.httpClient.get<any>(
+      `${environment.apiBaseUrl}/trainee/${id}`
+    )
+      .pipe(
+        take(1),
+        map((inputStagiaire: any) => {
+          const stagiaire: Stagiaire = new Stagiaire();
+          stagiaire.setId(inputStagiaire.id);
+          stagiaire.setLastName(inputStagiaire.lastName);     // en vert noms TS (front), en blanc noms json venant de JAVA (back)
+          stagiaire.setFirstName(inputStagiaire.firstName);
+          stagiaire.setEmail(inputStagiaire.email);
+          stagiaire.setPhoneNumber(inputStagiaire.phoneNumber);
+          stagiaire.setBirthDate(new Date(inputStagiaire.birthDate));
+          return stagiaire;
+        })
+      )
+  }
 
   public getStagiaires(): Array<Stagiaire> {
     return this.stagiaires;
   }
 
-public addStagiaire(stagiaire: StagiaireDto): void {
-  console.log('add stagiaire asked: ', stagiaire)
-  // Transform any to Stagiaire
-  this.httpClient.post<StagiaireDto>(this.controllerBaseUrl, 
-          stagiaire
-      )
-      .pipe(                   //  subscribe: c'est à partir d'ici qu'on pourra récupérer et envoyer l'info vers le back
-       // take(1),  //traduit le déclenchement en cas d'entrée POST ?
-        //  res => {
-        //   console.log("Response ", res)
-        // TODO push in local array strategy
-        //}
-        catchError((error: HttpErrorResponse) => {
-          console.log("Stagiaire not created: ", error)
-          return throwError(() => new Error('Not Created'))
+  public addStagiaire(stagiaire: StagiaireDto): Observable<Stagiaire> {
+    console.log('add stagiaire asked: ', stagiaire)
+    // Transform any to Stagiaire
+    return this.httpClient.post<StagiaireDto>(
+      this.controllerBaseUrl,
+      stagiaire
+    )
+      .pipe(
+        take(1),
+        map((stagiaireDto: StagiaireDto) => {
+          const stagiaire: Stagiaire = new Stagiaire();
+          stagiaire.setId(stagiaireDto.id!);
+          stagiaire.setLastName(stagiaireDto.lastName);
+          stagiaire.setFirstName(stagiaireDto.firstName);
+          stagiaire.setBirthDate(stagiaireDto.birthDate);
+          stagiaire.setPhoneNumber(stagiaireDto.phoneNumber);
+          stagiaire.setEmail(stagiaireDto.email);
+          return stagiaire;
         })
-      )
-      .subscribe(
-      res => 
-      console.log("Response ", res))
+      );
+
   }
 
 
-      public delete(stagiaire: Stagiaire): void {
-      console.log('delete stagiaire asked: ' 
-          + stagiaire.getLastName()      
-          + '(' + stagiaire.getId() +')')
-      // 1. call backend
-      this.httpClient.delete(
-        `${this.controllerBaseUrl}/${stagiaire.getId()}`
-        )
-        .subscribe(
-          _ => {
-            // remote remove is done
-            console.log('delete stagiaire in remote api done: ' 
-              + stagiaire.getLastName()      
-              + '(' + stagiaire.getId() +')')
-            // 2. adapt local list
-            const stagiaireIndex: number = this.stagiaires.findIndex(
-              (obj: Stagiaire) => obj.getId() === stagiaire.getId()
-            );
-            this.stagiaires.splice(stagiaireIndex,1);
-          }
-        )
-      
-    }
+  /* public delete(stagiaire: Stagiaire): void {
+   console.log('delete stagiaire asked: ' 
+       + stagiaire.getLastName()      
+       + '(' + stagiaire.getId() +')')
+   // 1. call backend
+   this.httpClient.delete(
+     `${this.controllerBaseUrl}/${stagiaire.getId()}`
+     )
+     .subscribe(
+       _ => {
+         // remote remove is done
+         console.log('delete stagiaire in remote api done: ' 
+           + stagiaire.getLastName()      
+           + '(' + stagiaire.getId() +')')
+         // 2. adapt local list
+         const stagiaireIndex: number = this.stagiaires.findIndex(
+           (obj: Stagiaire) => obj.getId() === stagiaire.getId()
+         );
+         this.stagiaires.splice(stagiaireIndex,1);
+       }
+     )
+   
+ }*/
+
+  public delete(stagiaire: Stagiaire): Observable<HttpResponse<any>> {
+    // 1. call backend
+    return this.httpClient.delete(
+      `${this.controllerBaseUrl}/${stagiaire.getId()}`,
+      {
+        observe: 'response'
+      }
+    );
+  }
 
   public getVisibleStagiaireNumber(date: Date | null): number {
     if (date === null) {

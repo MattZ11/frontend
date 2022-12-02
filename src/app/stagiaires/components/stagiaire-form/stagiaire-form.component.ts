@@ -49,6 +49,10 @@ export class StagiaireFormComponent implements OnInit {
     console.log("Delegate add stagiaire:", this.stagiaireForm.value)
     const dto: StagiaireDto = new StagiaireDto(this.stagiaireForm.value)
     this.stagiaireService.addStagiaire(dto)
+    .subscribe(()=> {
+      this.goHome();
+    })
+
     // TODO: Use EventEmitter with form value
     // console.log("Read from form: ", this.stagiaireForm.value);
     // const stagiaire: Stagiaire = new Stagiaire()

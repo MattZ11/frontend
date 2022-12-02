@@ -1,4 +1,5 @@
 export class StagiaireDto {
+    public id?: number;
     public lastName: string = '';
     public firstName: string = '';
     public email: string = '';

@@ -1,0 +1,44 @@
+{
+  "trainee": [
+    {
+      "id": 1,
+      "lastName": "Zanti",
+      "firstName": "Matthieu",
+      "email": "matthieu.zanti@hotmail.fr",
+      "phoneNumber": "06 71 03 90 12",
+      "birthDate": "1987-11-25T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "lastName": "Hendrix",
+      "firstName": "Jimi",
+      "email": "hendrix.j@27club.us",
+      "phoneNumber": "07 22 33 00 12",
+      "birthDate": "1942-11-27T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "lastName": "Joplin",
+      "firstName": "Janis",
+      "email": "j.j@37club.us",
+      "phoneNumber": "07 12 23 00 11",
+      "birthDate": "1943-01-19T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "lastName": "L'asticot",
+      "firstName": "Floflo",
+      "email": "thhhh.g@hhhh.hhh",
+      "phoneNumber": "+33755555555",
+      "birthDate": "1955-05-05T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "lastName": "De Rinel",
+      "firstName": "Hervé",
+      "email": "yttyt@pioupiou.kt",
+      "phoneNumber": "+3374444444",
+      "birthDate": "1102-02-21T00:00:00.000Z"
+    }
+  ]
+}

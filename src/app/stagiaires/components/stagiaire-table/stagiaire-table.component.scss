@@ -10,5 +10,9 @@ table {
 thead, tfoot{
     background-color: $head-foot-background-color;
     color: $head-foot-text-color;
+    border: solid 2px $head-foot-text-color;    //ajout
+
+        
+        
 }
 }

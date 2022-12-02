@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -69,8 +70,25 @@ export class StagiaireTableComponent implements OnInit {
 
   public onRemove(stagiaire: Stagiaire): void {
     console.log(`L'utilisateur souhaite supprimer ${stagiaire.getLastName()}`);
-    this.stagiaireService.delete(stagiaire);
-  }
+    this.stagiaireService.delete(stagiaire)
+    .subscribe({
+      next: (response: HttpResponse<any>) => {
+        this.stagiaires.splice(
+          this.stagiaires.findIndex((s: Stagiaire) => s.getId() === stagiaire.getId()),
+          1
+        )
+        // Here goes the snackbar
+      },
+      error: (error: any) => {
+        // Something went wrong, deal with it
+        console.log("Achtung ! Error was intercepted.")
+      },
+      complete:() => {
+        console.log
+      }
+    })
+}
+
 
 
   public onClick(stagiaire: Stagiaire): void {    // Il faut que j'arrive à afficher un composant
@@ -80,6 +98,9 @@ export class StagiaireTableComponent implements OnInit {
      // this.selectedStagiaire = stagiaire;
      // this.handleDetailService.setIsDetailHidden(false);  //  change la valeur de l'observable
 
+  }
+  public onUpdate(stagiaire: Stagiaire): void {    // Il faut que j'arrive à afficher un composant
+    console.log('Navigate to Update form');
   }
 
 
