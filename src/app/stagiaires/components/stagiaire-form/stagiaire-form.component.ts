@@ -2,6 +2,7 @@ import { ReturnStatement } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Observable, subscribeOn, Subscription } from 'rxjs';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 import { StagiaireDto } from '../../dto/stagiaire-dto';
@@ -24,7 +25,7 @@ export class StagiaireFormComponent implements OnInit {
   //   birthDate: new FormControl(null),
   // })
 
-public addMode: boolean = true;
+  public addMode: boolean = true;
 
   constructor(
     private stagiaireService: StagiaireService,
@@ -34,14 +35,18 @@ public addMode: boolean = true;
   ) { }
 
   ngOnInit(): void {
-    this.route.url.subscribe((url: UrlSegment[]) => {
-      if(url.filter((urlSegment: UrlSegment) => urlSegment.path === 'update').length){
-        this.addMode = false
-      }
-    });
-    this.stagiaireForm = this.formBuilderService.build().getForm();
-  }
+    const data: any = this.route.snapshot.data;
+    console.log(`${data.form instanceof FormGroup ? 'OK' : 'KO'}`)
+    
+    this.stagiaireForm = data.form;
 
+
+    if (this.stagiaireForm.value.id !== 0) {
+      this.addMode =  false;
+    } else {
+      this.addMode = true;
+    }
+    }
   //  méthode "helper"
   /**
     * Returns a list of form controls
@@ -56,25 +61,19 @@ public addMode: boolean = true;
   onSubmit() {
     console.log("Delegate add stagiaire:", this.stagiaireForm.value)
     const dto: StagiaireDto = new StagiaireDto(this.stagiaireForm.value)
-    this.stagiaireService.addStagiaire(dto)
-    .subscribe(()=> {
-      this.goHome();
-    })
 
-    // TODO: Use EventEmitter with form value
-    // console.log("Read from form: ", this.stagiaireForm.value);
-    // const stagiaire: Stagiaire = new Stagiaire()
-    // stagiaire.setLastName(this.stagiaireForm.value.lastName)
-    // stagiaire.setFirstName(this.stagiaireForm.value.firstName)
-    // stagiaire.setEmail(this.stagiaireForm.value.email)
-    // stagiaire.setPhoneNumber(this.stagiaireForm.value.phoneNumber)
-    // if (this.stagiaireForm.value.birthDate != null) {   //  permet de régler le cas birthdate non indiquée en supprimant le paramètre birthdate dans l'objet stagiaire
-    //   stagiaire.setBirthDate(new Date(this.stagiaireForm.value.birthDate))
-    // }
-    // console.log("Delegate add stagiaire ", stagiaire)
-    // this.stagiaireService.addStagiaire(stagiaire)
-  }
+    let subscription: Observable<any>;
 
+    if (this.addMode) {
+      subscription = this.stagiaireService.addStagiaire(dto)
+      
+        
+      } else {
+        // Invoke service update method
+        subscription = this.stagiaireService.update(this.stagiaireForm.value)
+      }
+      subscription.subscribe(() => this.goHome())
+    }
   public goHome(): void {
     this.router.navigate(['/', 'home']);
   }

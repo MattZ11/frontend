@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { StagiaireDetailComponent } from './stagiaires/components/stagiaire-detail/stagiaire-detail.component';
 import { StagiaireFormComponent } from './stagiaires/components/stagiaire-form/stagiaire-form.component';
 import { StagiaireTableComponent } from './stagiaires/components/stagiaire-table/stagiaire-table.component';
+import { StagiaireResolver } from './stagiaires/resolvers/stagiaire.resolver';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ export class AppRoutingModule {
 },
 {
   path: 'stagiaire/add',
-  component:StagiaireFormComponent
+  component:StagiaireFormComponent,
+  resolve: {form: StagiaireResolver}
 },
 {
   path: 'stagiaire/:id',    // /:
@@ -32,8 +34,8 @@ export class AppRoutingModule {
 {
   path: 'stagiaire/update/:id',    // /:
   component:StagiaireFormComponent,
- 
-},
+  resolve: {form: StagiaireResolver}
+ },
 {
   path: '**',   //  wild card
   redirectTo:'home',  //  par exemple, ou page d'erreur...

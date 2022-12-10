@@ -1,3 +1,4 @@
+<ng-container *ngIf="stagiaireForm">
 <form [formGroup]="stagiaireForm" (ngSubmit)="onSubmit()">
 
     <div>
@@ -76,3 +77,4 @@
         <button mat-raised-button color="danger" type="button" (click)="goHome()">Liste</button>
     </div>
 </form>
+</ng-container>
