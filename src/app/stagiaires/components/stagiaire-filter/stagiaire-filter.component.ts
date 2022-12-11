@@ -22,7 +22,7 @@ export class StagiaireFilterComponent implements OnInit {
     if (this.filterDate === null) {
       this.changeButtonState('btnAll');
     } else {
-      // SI le jour est 31 donc, je veux les personnes néees après 1950
+      // SI le jour est 31 donc, je veux les personnes nées après 1950
       // SINON je veux les personnées néees avant 1950
       if (this.filterDate.getDate() === 31) {
         this.changeButtonState('btnGT1950');
