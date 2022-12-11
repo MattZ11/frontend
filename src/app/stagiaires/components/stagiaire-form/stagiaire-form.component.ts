@@ -42,7 +42,7 @@ export class StagiaireFormComponent implements OnInit {
 
 
     if (this.stagiaireForm.value.id !== 0) {
-      this.addMode =  false;
+      this.addMode = false;
     } else {
       this.addMode = true;
     }
